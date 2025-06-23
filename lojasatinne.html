@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja Satinne - Descubra Sua Essência</title>
+
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+
+    <!-- ESTILOS CSS INTEGRADOS -->
+    <style>
+        /* --- Configurações Globais (sem alterações) --- */
+        :root {
+            --cor-fundo: #FFFFFF;
+            --cor-fundo-sutil: #f9f9f9; 
+            --cor-fundo-destaque: #f5f0ea; 
+            --cor-fundo-escuro-bloco: #1a1a1a; 
+            --cor-texto: #0a0a0a;
+            --cor-texto-secundario: #333333;
+            --cor-texto-claro-bloco: #e0e0e0; 
+            --cor-cinza-sutil: #5c5c5c;
+            --cor-destaque-sutil: #b08d57; 
+            --cor-bordas: #e0e0e0;
+            --cor-bordas-escuras: #444444; 
+            --transition-speed: 0.8s;
+            --transition-timing: cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Raleway', sans-serif; background-color: var(--cor-fundo);
+            color: var(--cor-texto); line-height: 1.7;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+            cursor: none; 
+            overflow-x: hidden; 
+        }
+        
+        .cursor { width: 25px; height: 25px; border: 1px solid var(--cor-texto); border-radius: 50%; position: fixed; z-index: 9999; pointer-events: none; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s, transform 0.1s linear; }
+        .cursor.hover { width: 50px; height: 50px; background-color: rgba(10, 10, 10, 0.1); border-color: transparent; }
+        body.dark-block-active .cursor { border-color: var(--cor-texto-claro-bloco); }
+        body.dark-block-active .cursor.hover { background-color: rgba(224, 224, 224, 0.1); border-color: transparent; }
+        
+        a, button { cursor: none; }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 700; letter-spacing: 1px; color: var(--cor-texto-secundario); }
+        h2.section-title-styled { font-size: 2.8rem; text-align: center; margin-bottom: 1.5rem; position: relative; padding-bottom: 1rem; }
+        h2.section-title-styled::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 2px; background-color: var(--cor-destaque-sutil); }
+        h3 { font-weight: 400; letter-spacing: 0.5px; font-size: 1.8rem; }
+        h4 { font-weight: 400; font-size: 1.6rem; margin-bottom: 0.4rem;} 
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .container-fluid { width: 100%; padding: 0; }
+
+        .section { padding: 6rem 0; overflow: hidden; }
+        .section-subtle-bg { background-color: var(--cor-fundo-sutil); border-top: 1px solid var(--cor-bordas); border-bottom: 1px solid var(--cor-bordas); }
+        .section-highlight-bg { background-color: var(--cor-fundo-destaque); }
+        
+        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; background-color: var(--cor-fundo); display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        #preloader img { max-height: 60px; animation: pulse 1.5s infinite ease-in-out; }
+        #preloader.hidden { opacity: 0; visibility: hidden; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+        /* --- Header --- */
+        .header { position: sticky; top: 0; width: 100%; z-index: 1000; padding: 1.5rem 0; background-color: rgba(255, 255, 255, 0.98); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--cor-bordas); transition: padding 0.4s ease; }
+        .nav-bar { display: flex; justify-content: space-between; align-items: center; }
+        .logo { text-decoration: none; height: 45px; } .logo img { height: 100%; width: auto; display: block; }
+        .nav-menu a { font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.8px; color: var(--cor-texto-secundario); text-decoration: none; margin-left: 2.5rem; padding-bottom: 5px; position: relative; transition: color 0.4s ease; }
+        .nav-menu a:hover, .nav-menu a.active-link { color: var(--cor-destaque-sutil); }
+        .nav-menu a::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 0; height: 1px; background-color: var(--cor-destaque-sutil); transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+        .nav-menu a:hover::after, .nav-menu a.active-link::after { width: 100%; }
+        .nav-icons { display: flex; align-items: center; }
+        .cart-icon { margin-left: 2.5rem; position: relative; color: var(--cor-texto-secundario); font-size: 1.3rem; text-decoration: none; transition: color 0.3s ease; }
+        .cart-icon:hover { color: var(--cor-destaque-sutil); }
+        .cart-count { position: absolute; top: -8px; right: -10px; background-color: var(--cor-destaque-sutil); color: var(--cor-fundo); border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: flex; justify-content: center; align-items: center; font-weight: 500; }
+
+        /* --- Shop Hero --- */
+        .shop-hero { padding: 8rem 0 6rem; text-align: center; background-color: var(--cor-fundo-sutil); border-bottom: 1px solid var(--cor-bordas); }
+        .shop-hero h1 { font-size: 3.8rem; margin-bottom: 1rem; color: var(--cor-texto-secundario); font-weight: 700; }
+        .shop-hero .highlight-phrase { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.8rem; color: var(--cor-destaque-sutil); margin-bottom: 2rem; display: block; }
+        .shop-hero p.intro-text { font-size: 1.15rem; color: var(--cor-cinza-sutil); max-width: 700px; margin: 0 auto 3rem auto; line-height: 1.8; font-weight: 300; }
+        
+        /* --- Banner Coleção Destaque (Invertido) --- */
+        .featured-collection-banner { height: 400px; background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('img satinne/e.jpeg'); background-color: var(--cor-fundo-escuro-bloco); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--cor-texto-claro-bloco); }
+        .featured-collection-banner .banner-content { max-width: 600px; padding: 2rem; }
+        .featured-collection-banner h2 { font-size: 2.8rem; margin-bottom: 1rem; color: var(--cor-fundo); font-weight: 700; }
+        .featured-collection-banner p { font-size: 1.1rem; font-weight: 300; margin-bottom: 2rem; color: rgba(224, 224, 224, 0.9); }
+        .featured-collection-banner .cta-banner-button { display: inline-block; padding: 0.9rem 2.2rem; border: 1px solid var(--cor-destaque-sutil); color: var(--cor-destaque-sutil); background-color: transparent; text-decoration: none; font-weight: 500; text-transform: uppercase; letter-spacing: 1.8px; transition: background-color 0.3s, color 0.3s; }
+        .featured-collection-banner .cta-banner-button:hover { background-color: var(--cor-destaque-sutil); color: var(--cor-fundo-escuro-bloco); }
+
+        /* --- Abas de Categoria --- */
+        .category-tabs-section { padding: 4rem 0; }
+        .tabs-nav { display: flex; justify-content: center; gap: 3rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--cor-bordas); }
+        .tab-button { font-family: 'Raleway', sans-serif; background: none; border: none; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 2.2px; color: var(--cor-cinza-sutil); padding-bottom: 12px; border-bottom: 2px solid transparent; transition: color 0.3s, border-color 0.3s; font-weight: 500; }
+        .tab-button.active, .tab-button:hover { color: var(--cor-texto-secundario); border-bottom-color: var(--cor-destaque-sutil); }
+
+        /* --- Seção de Produtos --- */
+        #shop-products.section { padding-top: 5rem; }
+        .products-container { display: none; } 
+        .products-container.active { display: block; animation: fadeInContent 0.7s var(--transition-timing); }
+        @keyframes fadeInContent { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); }  }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem;  }
+        .product-card { text-align: left; background-color: var(--cor-fundo); border: 1px solid var(--cor-bordas); /* Borda sutil sempre visível */ transition: box-shadow 0.4s ease; position: relative;  } /* Removido border-color transition */
+        .product-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.08); } /* Sombra mais pronunciada no hover */
+        .product-image { overflow: hidden; margin-bottom: 1.5rem; position: relative; background-color: #f0f0f0;  }
+        .product-image img { width: 100%; height: 450px; object-fit: cover; display: block; transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        .product-card:hover .product-image img { transform: scale(1.03); }
+        .product-info { padding: 0 1.5rem 2rem 1.5rem; }
+        .product-category-tag { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--cor-cinza-sutil); margin-bottom: 0.3rem; display: block; }
+        .product-short-desc { font-size: 0.9rem; color: var(--cor-cinza-sutil); margin-bottom: 0.8rem; line-height: 1.6; height: 3.2em; overflow: hidden; text-overflow: ellipsis; }
+        .product-price { font-size: 1.1rem; color: var(--cor-texto-secundario); font-weight: 500; margin-bottom: 1.2rem; display: block; }
+        .add-to-bag-btn { display: block; width: 100%; padding: 0.9rem 1.5rem; background-color: var(--cor-texto-secundario); color: var(--cor-fundo); border: 1px solid var(--cor-texto-secundario); text-decoration: none; font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.8px; text-align: center; transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
+        .add-to-bag-btn:hover { background-color: var(--cor-destaque-sutil); border-color: var(--cor-destaque-sutil); color: var(--cor-fundo); }
+        .product-image .quick-view-btn { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(10px); opacity: 0; background-color: rgba(255,255,255,0.95); /* Menos transparente */ color: var(--cor-texto-secundario); padding: 0.7rem 1.3rem; /* Um pouco maior */ font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; border: 1px solid var(--cor-bordas); transition: opacity 0.3s ease, transform 0.3s ease; white-space: nowrap; box-shadow: 0 2px 10px rgba(0,0,0,0.1); } /* Sombra sutil */
+        .product-card:hover .quick-view-btn { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* --- Guia de Estilo --- */
+        .style-guide-section { text-align: center; }
+        .style-guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; margin-top: 3rem; }
+        .style-guide-item { background-color: var(--cor-fundo); border: 1px solid var(--cor-bordas); padding-bottom: 1px; /* Para evitar que a borda "pule" */}
+        .style-guide-item img { width: 100%; height: 350px; object-fit: cover; margin-bottom: 1.5rem; }
+        .style-guide-item h3 { font-size: 1.6rem; margin-bottom: 0.8rem; color: var(--cor-texto-secundario); padding: 0 1rem; }
+        .style-guide-item p { font-size: 0.95rem; color: var(--cor-cinza-sutil); padding: 0 1.5rem 1.5rem 1.5rem; line-height: 1.7; }
+
+        /* --- Detalhes que Encantam (Claro) --- */
+        .creation-details-section { text-align: center; background-color: var(--cor-fundo-sutil); padding: 7rem 0;  }
+        .creation-details-section .section-title-styled { color: var(--cor-texto-secundario); }
+        .creation-details-section .section-title-styled::after { background-color: var(--cor-destaque-sutil);  }
+        .creation-details-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 3rem; text-align: left; }
+        .creation-details-content img { width: 100%; height: 500px; object-fit: cover; }
+        .creation-details-text h3 { margin-bottom: 1.5rem; font-size: 2rem; color: var(--cor-texto-secundario); }
+        .creation-details-text p { font-size: 1.05rem; color: var(--cor-cinza-sutil); margin-bottom: 1rem; }
+
+        /* --- Testemunho na Loja --- */
+        .shop-testimonial-section { padding: 7rem 0; background-color: var(--cor-fundo-destaque); text-align: center; }
+        .shop-testimonial-quote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 2rem; color: var(--cor-texto-secundario); max-width: 800px; margin: 0 auto 1.5rem auto; line-height: 1.6; }
+        .shop-testimonial-author { font-size: 1rem; color: var(--cor-destaque-sutil); font-weight: 500; }
+        .shop-testimonial-author::before { content: "— "; }
+
+        /* --- Chamada para Atendimento Privé --- */
+        .prive-cta-section { background-image: linear-gradient(to right, rgba(245, 240, 234, 0.95), rgba(245, 240, 234, 0.8)), url('img satinne/a.jpeg'); background-size: cover; background-position: center 30%; padding: 7rem 0; text-align: center; }
+        .prive-cta-section .container { max-width: 700px; } .prive-cta-section h2 { font-size: 2.8rem; margin-bottom: 1.5rem; color: var(--cor-texto-secundario); }
+        .prive-cta-section p { font-size: 1.1rem; color: var(--cor-cinza-sutil); margin-bottom: 2.5rem; }
+        .prive-cta-button { display: inline-block; padding: 1rem 2.5rem; background-color: var(--cor-destaque-sutil); color: var(--cor-fundo); border: 1px solid var(--cor-destaque-sutil); text-decoration: none; font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1.8px; transition: background-color 0.3s ease, border-color 0.3s ease; }
+        .prive-cta-button:hover { background-color: #a07d47; border-color: #a07d47; }
+        
+        /* --- Newsletter --- */
+        .newsletter-section { padding: 4rem 0; background-color: var(--cor-fundo-sutil); border-top: 1px solid var(--cor-bordas); }
+        .newsletter-content { text-align: center; max-width: 600px; margin: 0 auto; } .newsletter-content h3 { font-size: 1.8rem; margin-bottom: 0.8rem; }
+        .newsletter-content p { font-size: 1rem; color: var(--cor-cinza-sutil); margin-bottom: 2rem; }
+        .newsletter-form { display: flex; justify-content: center; gap: 1rem; }
+        .newsletter-form input[type="email"] { padding: 0.8rem 1rem; border: 1px solid var(--cor-bordas); font-family: 'Raleway', sans-serif; font-size: 0.9rem; flex-grow: 1; max-width: 350px; }
+        .newsletter-form button { padding: 0.8rem 1.8rem; background-color: var(--cor-texto-secundario); color: var(--cor-fundo); border: 1px solid var(--cor-texto-secundario); font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; transition: background-color 0.3s, border-color 0.3s; }
+        .newsletter-form button:hover { background-color: var(--cor-destaque-sutil); border-color: var(--cor-destaque-sutil); }
+
+        /* --- Rodapé Melhorado --- */
+        .footer { padding: 6rem 0 4rem; background-color: var(--cor-fundo-escuro-bloco); color: var(--cor-texto-claro-bloco); border-top: 4px solid var(--cor-destaque-sutil); }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2.5rem; text-align: left; margin-bottom: 4rem; }
+        .footer-column h5 { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--cor-fundo); margin-bottom: 1.8rem; letter-spacing: 1px; position: relative; padding-bottom: 0.8rem; font-weight: 700; }
+        .footer-column h5::after { content: ''; position: absolute; bottom: 0; left: 0; width: 35px; height: 2px; background-color: var(--cor-destaque-sutil); }
+        .footer-column.about .footer-logo-img { max-width: 110px; margin-bottom: 1.2rem; filter: brightness(0) invert(1);  }
+        .footer-column p { font-size: 0.9rem; line-height: 1.9; color: rgba(224, 224, 224, 0.75); margin-bottom: 0.8rem; }
+        .footer-links { list-style: none; padding: 0; } .footer-links li { margin-bottom: 0.9rem; }
+        .footer-links li a { color: rgba(224, 224, 224, 0.75); text-decoration: none; font-size: 0.9rem; display: inline-block; position: relative; padding-bottom: 2px; transition: color 0.3s ease; }
+        .footer-links li a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background-color: var(--cor-destaque-sutil); transition: width 0.3s ease; }
+        .footer-links li a:hover { color: var(--cor-destaque-sutil); } .footer-links li a:hover::after { width: 100%; }
+        .footer-social-icons { display: flex; gap: 1.2rem; margin-top: 1rem; }
+        .footer-social-icons a { color: rgba(224, 224, 224, 0.75); text-decoration: none; font-size: 1.3rem; transition: color 0.3s ease, transform 0.3s ease; }
+        .footer-social-icons a:hover { color: var(--cor-destaque-sutil); transform: translateY(-2px); }
+        .footer-social-icons i { vertical-align: middle; }
+        .footer-bottom { text-align: center; padding-top: 3rem; border-top: 1px solid var(--cor-bordas-escuras); font-size: 0.85rem; color: rgba(224, 224, 224, 0.5); }
+        
+        /* --- Menu Toggle (Mobile) --- */
+        .menu-toggle { display: none; width: 30px; height: 25px; flex-direction: column; justify-content: space-between; z-index: 1001; position: relative; }
+        .menu-toggle .bar { width: 100%; height: 2px; background-color: var(--cor-texto-secundario); transition: all 0.4s ease; }
+        
+        /* --- Responsividade --- */
+        @media (max-width: 992px) { /* Tablets e Desktops menores */
+            .container { padding: 0 1.5rem; }
+            h2.section-title-styled { font-size: 2.5rem; }
+            h3 {font-size: 1.6rem;} h4 {font-size: 1.4rem;}
+            .shop-hero h1 { font-size: 3.2rem; } .shop-hero .highlight-phrase { font-size: 1.6rem; } .shop-hero p.intro-text { font-size: 1.1rem;}
+            .featured-collection-banner h2 {font-size: 2.4rem;} .featured-collection-banner p {font-size: 1.05rem;}
+            .products-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; }
+            .product-image img { height: 400px; }
+            .nav-menu a { margin-left: 1.5rem; letter-spacing: 1.5px; } .cart-icon { margin-left: 1.5rem; }
+            .creation-details-content { grid-template-columns: 1fr; gap: 2.5rem; }
+            .creation-details-content img { height: 400px; order: -1;  }
+            .style-guide-item img { height: 320px; }
+            .shop-testimonial-quote { font-size: 1.8rem; }
+            .prive-cta-section h2 {font-size: 2.5rem;}
+            .footer-content { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2.5rem;}
+        }
+        
+        /* --- MOBILE: @media (max-width: 768px) --- */
+        @media (max-width: 768px) { 
+            .section { padding: 3.5rem 0; } /* Reduzido padding de seção */
+            .container { padding: 0 1rem; }
+            .header { padding: 1rem 0; } .logo { height: 38px; } /* Ajustado altura do logo */
+            
+            .menu-toggle { display: flex; } .nav-icons { margin-left: auto; } .cart-icon { margin-left: 1rem; font-size: 1.25rem;} /* Ícone um pouco maior */
+            .nav-menu { position: fixed; top: 0; right: -100%; width: 85%; /* Um pouco mais largo */ max-width: 320px; height: 100vh; background-color: var(--cor-fundo); flex-direction: column; justify-content: center; align-items: center; gap: 2.5rem; /* Mais espaçamento */ transition: right 0.6s var(--transition-timing); box-shadow: -5px 0 15px rgba(0,0,0,0.1); padding-top: 70px; /* Mais espaço para o header */ }
+            .nav-menu.active { right: 0; } .nav-menu a { margin-left: 0; font-size: 1.15rem; /* Um pouco maior */ }
+            .menu-toggle.active + .nav-menu { right: 0; } 
+            .menu-toggle.active .bar:nth-child(1) { transform: rotate(45deg) translate(7px, 7px); } .menu-toggle.active .bar:nth-child(2) { opacity: 0; } .menu-toggle.active .bar:nth-child(3) { transform: rotate(-45deg) translate(7px, -7px); }
+            
+            h1 { font-size: 2.4rem !important; } /* Forçar H1 menor */
+            h2.section-title-styled { font-size: 2rem; margin-bottom: 1rem; padding-bottom: 0.8rem; }
+            h2.section-title-styled::after {width: 60px;}
+            h3 {font-size: 1.6rem;} H4 {font-size: 1.4rem;}
+
+            .shop-hero { padding: 4rem 0 2.5rem; } .shop-hero h1 { font-size: 2.4rem; } .shop-hero .highlight-phrase { font-size: 1.3rem; margin-bottom: 1.2rem; } .shop-hero p.intro-text { font-size: 0.95rem; line-height: 1.7; margin-bottom: 2rem; }
+            
+            .featured-collection-banner { height: auto; padding: 4rem 1.5rem; /* Mais padding lateral */ } .featured-collection-banner h2 {font-size: 2rem;} .featured-collection-banner p {font-size: 1rem; margin-bottom: 1.5rem;} .featured-collection-banner .cta-banner-button {padding: 0.8rem 1.8rem; font-size: 0.85rem;}
+            
+            .category-tabs-section { padding: 2.5rem 0;}
+            .tabs-nav { gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.5rem; padding-bottom: 1rem; }
+            .tab-button { font-size: 0.9rem; letter-spacing: 1.5px; padding: 8px 10px; /* Padding ajustado para toque */ }
+            
+            #shop-products.section { padding-top: 2.5rem; } 
+            .products-grid { grid-template-columns: 1fr; gap: 2rem; }  /* Uma coluna sempre */
+            .product-card { border-width: 1px; } /* Garantir borda */
+            .product-image img { height: auto; aspect-ratio: 3/4; /* Proporção para imagem */ object-fit: cover; }  
+            .product-info { padding: 1rem 1.2rem 1.5rem 1.2rem; }
+            .product-category-tag {font-size: 0.7rem;}
+            .product-short-desc {font-size: 0.85rem; height: auto; max-height: none; /* Permitir que o texto flua */}
+            .product-price {font-size: 1rem; margin-bottom: 1rem;}
+            .add-to-bag-btn {padding: 0.9rem 1rem; font-size: 0.85rem;}
+            .product-image .quick-view-btn { padding: 0.6rem 1rem; font-size: 0.75rem; bottom: 15px;}
+
+            .style-guide-section {padding: 3rem 0;}
+            .style-guide-grid { grid-template-columns: 1fr; gap: 2.5rem; margin-top: 2rem; } 
+            .style-guide-item img { height: 320px; margin-bottom: 1rem;}
+            .style-guide-item h3 {font-size: 1.5rem;} .style-guide-item p {padding: 0 1rem 1rem 1rem; font-size: 0.9rem;}
+            
+            .creation-details-section {padding: 4rem 0;}
+            .creation-details-content {grid-template-columns: 1fr; gap: 2rem;}
+            .creation-details-content img { height: 320px; } .creation-details-text h3 {font-size: 1.7rem; margin-bottom: 1rem;} .creation-details-text p {font-size: 0.95rem;}
+            
+            .shop-testimonial-section {padding: 4rem 0;}
+            .shop-testimonial-quote { font-size: 1.5rem; max-width: 90%; } .shop-testimonial-author {font-size: 0.95rem;}
+            
+            .prive-cta-section {padding: 4rem 1.5rem;} .prive-cta-section h2 {font-size: 2rem;} .prive-cta-section p {font-size: 0.95rem; margin-bottom: 2rem;} .prive-cta-button {padding: 0.9rem 2rem; font-size: 0.85rem;}
+            
+            .newsletter-section {padding: 3rem 0;} .newsletter-content h3 {font-size: 1.6rem;} .newsletter-content p {font-size: 0.95rem;}
+            .newsletter-form { flex-direction: column; gap: 0.8rem;} .newsletter-form input[type="email"], .newsletter-form button {font-size: 0.9rem; padding: 0.9rem 1rem;}
+
+            .footer {padding: 4rem 0 2.5rem;}
+            .footer-content { grid-template-columns: 1fr; text-align: center; gap: 2.5rem; margin-bottom: 2.5rem;} 
+            .footer-column h5 {font-size: 1.2rem; margin-bottom: 1rem;}
+            .footer-column h5::after { left: 50%; transform: translateX(-50%); }
+            .footer-column p, .footer-links li a {font-size: 0.9rem;}
+            .footer-social-icons { justify-content: center; }
+            .footer-bottom {padding-top: 2.5rem; font-size: 0.8rem;}
+        }
+
+        /* --- TELAS MUITO PEQUENAS: @media (max-width: 480px) --- */
+        @media (max-width: 480px) {
+            .section { padding: 2.5rem 0; }
+            .container { padding: 0 0.8rem; } 
+            .header {padding: 0.8rem 0;} .logo {height: 35px;}
+            
+            h1 {font-size: 2rem !important;} 
+            h2.section-title-styled { font-size: 1.7rem; margin-bottom: 0.8rem; }
+            h3 {font-size: 1.4rem;} H4 {font-size: 1.25rem;}
+
+            .shop-hero { padding: 3rem 0 2rem; } .shop-hero h1 { font-size: 2rem; } .shop-hero .highlight-phrase { font-size: 1.1rem; } .shop-hero p.intro-text { font-size: 0.9rem; }
+            
+            .featured-collection-banner { padding: 3rem 1rem; } .featured-collection-banner h2 {font-size: 1.7rem;} .featured-collection-banner p {font-size: 0.9rem;} .featured-collection-banner .cta-banner-button {padding: 0.7rem 1.5rem; font-size: 0.8rem;}
+            
+            .category-tabs-section {padding: 2rem 0;}
+            .tabs-nav { gap: 0.5rem; } .tab-button { font-size: 0.8rem; letter-spacing: 1.2px; padding: 6px 8px;}
+            
+            #shop-products.section { padding-top: 2rem; }
+            .product-image img { aspect-ratio: 4/5; /* Um pouco mais alto */ } 
+            .product-info { padding: 0.8rem 1rem 1.2rem 1rem; }
+            .add-to-bag-btn {padding: 0.8rem 1rem; font-size: 0.8rem;}
+
+            .style-guide-item img { height: 260px; } .style-guide-item h3 {font-size: 1.3rem;} .style-guide-item p {font-size: 0.85rem;}
+            .creation-details-content img { height: 280px; } .creation-details-text h3 {font-size: 1.6rem;} .creation-details-text p {font-size: 0.9rem;}
+            .shop-testimonial-quote { font-size: 1.3rem; }
+            .prive-cta-section {padding: 3rem 0;} .prive-cta-section h2 {font-size: 1.8rem;} .prive-cta-section p {font-size: 0.9rem;}
+            .newsletter-content h3 {font-size: 1.4rem;}
+            .footer-column h5 {font-size: 1.15rem;}
+            .footer-bottom {font-size: 0.75rem;}
+        }
+
+    </style>
+</head>
+<body data-dark-block-active="false">
+    
+    <div id="preloader"> <img src="img satinne/logo preta.png" alt="Carregando a Loja Satinne..."> </div>
+    <div class="cursor"></div>
+    <header id="header" class="header"> <div class="container"> <nav class="nav-bar"> <a href="satinne.html" class="logo"> <img src="img satinne/logo preta.png" alt="Logo Satinne"> </a> <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu"> <div class="bar"></div> <div class="bar"></div> <div class="bar"></div> </button> <div class="nav-menu" id="nav-menu"> <a href="satinne.html#arte">Nossa Arte</a> <a href="satinne-loja.html" class="active-link">Loja</a> <a href="satinne.html#colecoes">Inspirações</a> <a href="satinne.html#prive">Atendimento Privé</a> <a href="satinne.html#visite">Contato</a> </div> <div class="nav-icons"> <a href="#" class="cart-icon" aria-label="Sacola de Compras"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg> <span class="cart-count">0</span> </a> </div> </nav> </div> </header>
+
+    <main>
+        <section class="shop-hero"> <div class="container"> <h1>Universo Satinne</h1> <span class="highlight-phrase">Onde a elegância encontra sua forma mais íntima.</span> <p class="intro-text">Mergulhe em nossas coleções exclusivas, onde cada peça é uma promessa de conforto sublime e design atemporal. Descubra a lingerie que não apenas veste, mas celebra a sua individualidade e poder feminino.</p> </div> </section>
+        
+        <section class="container-fluid featured-collection-banner" id="featured-banner-dark">
+            <div class="banner-content">
+                <h2>Coleção Éclat</h2>
+                <p>Descubra a luminosidade e a sofisticação da nossa mais recente inspiração, pensada para realçar sua beleza natural.</p>
+                <a href="#shop-products" class="cta-banner-button">Explorar Agora</a>
+            </div>
+        </section>
+
+        <section class="category-tabs-section"> <div class="container"> <div class="tabs-nav"> <button class="tab-button active" data-tab="lingerie-shop">Lingerie Essentiel</button> <button class="tab-button" data-tab="loungewear-shop">Loungewear Couture</button> <button class="tab-button" data-tab="bridal-shop">Bridal Rêverie</button> </div> </div> </section>
+        <section id="shop-products" class="section"> <div class="container"> <div id="lingerie-shop" class="products-container active"> <div class="products-grid"> <div class="product-card"> <div class="product-image"> <img src="img satinne/b.jpeg" alt="Body Noir em renda francesa e tule poá"> <button class="quick-view-btn">Ver Detalhes</button> </div> <div class="product-info"> <span class="product-category-tag">Lingerie Essentiel</span> <h4>Body Noir</h4> <p class="product-short-desc">Renda francesa e tule poá. Um convite à sedução sofisticada e ao conforto absoluto.</p> <span class="product-price">R$ 389,90</span> <button class="add-to-bag-btn">Adicionar à Sacola</button> </div> </div> <div class="product-card"> <div class="product-image"> <img src="img satinne/k.jpeg" alt="Conjunto Alvorada em renda com design contemporâneo"> <button class="quick-view-btn">Ver Detalhes</button> </div> <div class="product-info"> <span class="product-category-tag">Lingerie Essentiel</span> <h4>Conjunto Alvorada</h4> <p class="product-short-desc">Renda com design contemporâneo para um despertar de confiança e bem-estar diário.</p> <span class="product-price">R$ 329,90</span> <button class="add-to-bag-btn">Adicionar à Sacola</button> </div> </div> <div class="product-card"> <div class="product-image"> <img src="img satinne/j.jpeg" alt="Conjunto Soir em renda e microfibra acetinada"> <button class="quick-view-btn">Ver Detalhes</button> </div> <div class="product-info"> <span class="product-category-tag">Lingerie Essentiel</span> <h4>Conjunto Soir</h4> <p class="product-short-desc">Renda delicada e microfibra acetinada para noites de serenidade e elegância incomparável.</p> <span class="product-price">R$ 359,90</span> <button class="add-to-bag-btn">Adicionar à Sacola</button> </div> </div> <div class="product-card"> <div class="product-image"> <img src="img satinne/i.jpeg" alt="Body Matin em tule poá e renda floral"> <button class="quick-view-btn">Ver Detalhes</button> </div> <div class="product-info"> <span class="product-category-tag">Lingerie Essentiel</span> <h4>Body Matin</h4> <p class="product-short-desc">Tule poá e renda floral, a combinação perfeita para manhãs onde a elegância encontra o conforto.</p> <span class="product-price">R$ 419,90</span> <button class="add-to-bag-btn">Adicionar à Sacola</button> </div> </div> </div> </div> <div id="loungewear-shop" class="products-container"> <div class="products-grid"> <div class="product-card"> <div class="product-image"> <img src="img satinne/d.jpeg" alt="Top Poème em renda chantilly com alças finas"> <button class="quick-view-btn">Ver Detalhes</button> </div> <div class="product-info"> <span class="product-category-tag">Loungewear Couture</span> <h4>Top Poème</h4> <p class="product-short-desc">Renda chantilly com alças finas. Um sopro de romance e delicadeza para seus momentos de relaxamento.</p> <span class="product-price">R$ 289,90</span> <button class="add-to-bag-btn">Adicionar à Sacola</button> </div> </div> <div class="product-card"> <div class="product-image"> <img src="img satinne/m.jpeg" alt="Robe de Manhã em tecido fluido e elegante"> <button class="quick-view-btn">Ver Detalhes</button> </div> <div class="product-info"> <span class="product-category-tag">Loungewear Couture</span> <h4>Robe de Manhã</h4> <p class="product-short-desc">Um abraço de luxo e serenidade para iniciar seus rituais matinais com estilo e conforto.</p> <span class="product-price">R$ 479,90</span> <button class="add-to-bag-btn">Adicionar à Sacola</button> </div> </div> <div class="product-card"> <div class="product-image"> <img src="img satinne/e.jpeg" alt="Cardigã Aconchego em tricot macio"> <button class="quick-view-btn">Ver Detalhes</button> </div> <div class="product-info"> <span class="product-category-tag">Loungewear Couture</span> <h4>Cardigã Aconchego</h4> <p class="product-short-desc">Tricot macio e envolvente, perfeito para momentos de pausa e introspecção com elegância.</p> <span class="product-price">R$ 529,90</span> <button class="add-to-bag-btn">Adicionar à Sacola</button> </div> </div> </div> </div> <div id="bridal-shop" class="products-container"> <div class="products-grid"> <div class="product-card"> <div class="product-image"> <img src="img satinne/g.jpeg" alt="Body Noiva Sonho em renda chantilly e tule poá"> <button class="quick-view-btn">Ver Detalhes</button> </div> <div class="product-info"> <span class="product-category-tag">Bridal Rêverie</span> <h4>Body Noiva Sonho</h4> <p class="product-short-desc">Renda chantilly e tule poá. A promessa de um dia inesquecível, envolta em pura arte e romance.</p> <span class="product-price">R$ 699,90</span> <button class="add-to-bag-btn">Adicionar à Sacola</button> </div> </div> <div class="product-card"> <div class="product-image"> <img src="img satinne/l.jpeg" alt="Camisola Noiva Poème com detalhes em renda sobre tule"> <button class="quick-view-btn">Ver Detalhes</button> </div> <div class="product-info"> <span class="product-category-tag">Bridal Rêverie</span> <h4>Camisola Noiva Poème</h4> <p class="product-short-desc">Detalhes preciosos em renda sobre tule, criando uma peça etérea para noites memoráveis.</p> <span class="product-price">R$ 589,90</span> <button class="add-to-bag-btn">Adicionar à Sacola</button> </div> </div> <div class="product-card"> <div class="product-image"> <img src="img satinne/h.jpeg" alt="Robe Noiva Despertar com decote profundo nas costas"> <button class="quick-view-btn">Ver Detalhes</button> </div> <div class="product-info"> <span class="product-category-tag">Bridal Rêverie</span> <h4>Robe Noiva Despertar</h4> <p class="product-short-desc">Decote profundo nas costas e tule poá. Um toque final de mistério e elegância para o grande dia.</p> <span class="product-price">R$ 749,90</span> <button class="add-to-bag-btn">Adicionar à Sacola</button> </div> </div> </div> </div> </div> </section>
+
+        <section class="section section-subtle-bg style-guide-section"> <div class="container"> <h2 class="section-title-styled">Inspire-se com Satinne</h2> <div class="style-guide-grid"> <div class="style-guide-item"> <img src="img satinne/k.jpeg" alt="Look elegante com lingerie Satinne para o dia a dia"> <h3>Elegância Cotidiana</h3> <p>Descubra como integrar a sofisticação da lingerie Satinne em seus looks diários, elevando o conforto e a confiança em cada momento.</p> </div> <div class="style-guide-item"> <img src="img satinne/j.jpeg" alt="Peças Satinne para noites de seda e conforto"> <h3>Noites de Seda</h3> <p>Entregue-se ao toque luxuoso de nossas sedas e rendas, criando uma atmosfera de puro deleite e serenidade para suas noites.</p> </div> <div class="style-guide-item"> <img src="img satinne/b.jpeg" alt="Lingerie Satinne como peça statement"> <h3>Confiança Revelada</h3> <p>Use sua lingerie Satinne como uma declaração de estilo, combinando-a com peças externas para um visual ousado e cheio de personalidade.</p> </div> </div> </div> </section>
+        
+        <section class="section creation-details-section section-subtle-bg" id="creation-details"> <div class="container"> <h2 class="section-title-styled">Detalhes que Encantam</h2> <div class="creation-details-content"> <img src="img satinne/l.jpeg" alt="Close-up em detalhe de renda Satinne"> <div class="creation-details-text"> <h3>A Arte em Cada Ponto</h3> <p>Em Satinne, cada peça é mais que um item de vestuário; é uma obra de arte concebida com paixão. Selecionamos apenas os tecidos mais nobres, das rendas francesas tecidas com tradição secular à seda pura que acaricia a pele.</p> <p>Nossos designers dedicam-se a criar modelagens que não apenas embelezam, mas que respeitam e celebram as formas femininas, garantindo um caimento impecável e um conforto que perdura.</p> </div> </div> </div> </section>
+
+        <section class="shop-testimonial-section"> <div class="container"> <blockquote class="shop-testimonial-quote">"A cada peça Satinne que adquiro, sinto-me mais conectada com a minha própria essência. É um luxo que se sente na pele e na alma."</blockquote> <cite class="shop-testimonial-author">M.R., Cliente Satinne</cite> </div> </section>
+        <section class="prive-cta-section"> <div class="container"> <h2>Uma Experiência Sob Medida</h2> <p>Descubra o auge da personalização com nosso Atendimento Privé. Crie ou encontre a lingerie dos seus sonhos, em uma consultoria exclusiva pensada para você.</p> <a href="satinne.html#prive" class="prive-cta-button">Conheça o Atendimento Privé</a> </div> </section>
+        <section class="newsletter-section"> <div class="container"> <div class="newsletter-content"> <h3>Fique por Dentro</h3> <p>Inscreva-se para receber novidades exclusivas, lançamentos e inspirações do universo Satinne diretamente em seu e-mail.</p> <form class="newsletter-form"> <input type="email" placeholder="Seu melhor e-mail" required> <button type="submit">Inscrever</button> </form> </div> </div> </section>
+    </main>
+
+    <footer class="footer"> <div class="container"> <div class="footer-content"> <div class="footer-column about"> <img src="img satinne/logo preta.png" alt="Logo Satinne Branca" class="footer-logo-img"> <p>Satinne celebra a arte da intimidade através de peças atemporais, desenhadas para o corpo e para a alma com tecidos nobres e design que perdura.</p> </div> <div class="footer-column"> <h5>Navegue</h5> <ul class="footer-links"> <li><a href="satinne.html#arte">Nossa Arte</a></li> <li><a href="satinne-loja.html">Loja</a></li> <li><a href="satinne.html#colecoes">Inspirações</a></li> <li><a href="satinne.html#prive">Atendimento Privé</a></li> </ul> </div> <div class="footer-column"> <h5>Suporte</h5> <ul class="footer-links"> <li><a href="#">FAQ</a></li> <li><a href="#">Política de Trocas</a></li> <li><a href="#">Termos de Uso</a></li> <li><a href="satinne.html#visite">Contato</a></li> </ul> </div> <div class="footer-column"> <h5>Conecte-se</h5> <p>Rua Oscar Freire, 900<br>São Paulo, SP</p> <p><a href="mailto:contato@satinne.com" style="color: rgba(224, 224, 224, 0.75); text-decoration: none;">contato@satinne.com</a></p> <div class="footer-social-icons"> <a href="https://www.instagram.com/satinne_intimate?igsh=MW1nN2tueDFyc296YQ==" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i data-feather="instagram"></i></a> </div> </div> </div> <div class="footer-bottom"> <p>© 2025 Satinne. Todos os direitos reservados. Uma marca fictícia criada com propósito de design.</p> </div> </div> </footer>
+
+    <script>
+        feather.replace(); 
+        document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader'); if (preloader) { window.addEventListener('load', () => { preloader.classList.add('hidden'); }); }
+            const cursor = document.querySelector('.cursor'); const interactiveElements = document.querySelectorAll('a, button');
+            if (cursor && !('ontouchstart' in window) /* Não mostrar cursor customizado em touch devices */) { document.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; }); interactiveElements.forEach(el => { el.addEventListener('mouseenter', () => cursor.classList.add('hover')); el.addEventListener('mouseleave', () => cursor.classList.remove('hover')); }); } else if (cursor) { cursor.style.display = 'none'; /* Esconder cursor em touch devices */ }
+            const tabButtons = document.querySelectorAll('.tab-button'); const productsContainers = document.querySelectorAll('.products-container');
+            tabButtons.forEach(button => { button.addEventListener('click', () => { const tabTarget = button.getAttribute('data-tab'); tabButtons.forEach(btn => btn.classList.remove('active')); productsContainers.forEach(container => container.classList.remove('active')); button.classList.add('active'); const activeTabContent = document.getElementById(tabTarget); if (activeTabContent) activeTabContent.classList.add('active'); }); });
+            const menuToggle = document.getElementById('menu-toggle'); const navMenu = document.getElementById('nav-menu');
+            if (menuToggle && navMenu) {  const navLinks = navMenu.querySelectorAll('a'); menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navMenu.classList.toggle('active'); document.body.classList.toggle('no-scroll'); /* Evitar scroll do body com menu aberto */ }); navLinks.forEach(link => { link.addEventListener('click', () => { if (navMenu.classList.contains('active')) { menuToggle.classList.remove('active'); navMenu.classList.remove('active'); document.body.classList.remove('no-scroll'); } }); }); }
+            const currentLocation = window.location.href; const navLinksForActive = document.querySelectorAll('.nav-menu a'); navLinksForActive.forEach(link => { if(link.href === currentLocation) link.classList.add('active-link'); });
+            const darkBanner = document.getElementById('featured-banner-dark'); 
+            if (darkBanner && cursor && !('ontouchstart' in window)) { darkBanner.addEventListener('mouseenter', () => { document.body.classList.add('dark-block-active'); }); darkBanner.addEventListener('mouseleave', () => { document.body.classList.remove('dark-block-active'); }); }
+        });
+    </script>
+</body>
+</html>
